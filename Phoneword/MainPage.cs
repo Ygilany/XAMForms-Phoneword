@@ -43,6 +43,7 @@ namespace Phoneword
                 Text = "Call",
                 IsEnabled = false
             };
+            callButton.Clicked += OnCall;
 
             Content = new StackLayout
             {
@@ -76,6 +77,19 @@ namespace Phoneword
             {
                 callButton.IsEnabled = false;
                 callButton.Text = "Call";
+            }
+        }
+
+        private async void OnCall(object sender, EventArgs e)
+        {
+            if (await this.DisplayAlert(
+                "Dial a Number",
+                "Would you like to call "+ translatedNumber + "?",
+                "Yes",
+                "No")) 
+            {
+                var dialer = DependencyService.Get<IDialer>();
+                await dialer.DialAsync(translatedNumber);
             }
         }
     }
